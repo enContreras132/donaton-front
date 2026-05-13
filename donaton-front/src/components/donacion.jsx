@@ -139,7 +139,7 @@ export default function Donacion() {
                 {/* Botón Submit */}
                 <button type="submit" className="btn btn-dark w-100 py-2" style={{ fontSize: '1.1rem' }}>
                   Donar ahora
-                </button>
+                </button>  
               </form>
             </div>
           </div>
