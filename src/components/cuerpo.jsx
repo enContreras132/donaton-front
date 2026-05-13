@@ -49,7 +49,7 @@ export default function Cuerpo() {
                 width: '300px',
                 height: '120px'
               }} 
-              to="/">
+              to="/necesidad">
               Reportar una necesidad
             </Link>
           </div>

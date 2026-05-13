@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { crearDonacion } from '../services/bffService'
 
 export default function Donacion() {
   const [formData, setFormData] = useState({
@@ -8,10 +8,14 @@ export default function Donacion() {
     monto: '50',
     montoCustom: '',
     metodoPago: 'tarjeta',
-    mensaje: ''
+    mensaje: '',
+    tipoRecurso: 'dinero',
+    necesidadId: ''
   })
 
   const [errors, setErrors] = useState({})
+  const [loading, setLoading] = useState(false)
+  const [mensaje, setMensaje] = useState('')
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -23,23 +27,69 @@ export default function Donacion() {
 
   const validateForm = () => {
     const newErrors = {}
-    if (!formData.nombre.trim()) newErrors.nombre = 'El nombre es requerido'
-    if (!formData.email.trim()) newErrors.email = 'El email es requerido'
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) newErrors.email = 'Email inválido'
-    
-    const monto = formData.monto === 'custom' ? formData.montoCustom : formData.monto
-    if (!monto || parseFloat(monto) <= 0) newErrors.monto = 'Ingresa un monto válido'
-    
+
+    if (!formData.nombre.trim()) {
+      newErrors.nombre = 'El nombre es requerido'
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'El email es requerido'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Email inválido'
+    }
+
+    const monto = formData.monto === 'custom'
+      ? formData.montoCustom
+      : formData.monto
+
+    if (!monto || Number(monto) <= 0) {
+      newErrors.monto = 'Ingresa un monto válido'
+    }
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (validateForm()) {
-      console.log('Formulario enviado:', formData)
-      // Aquí iría la lógica para procesar la donación
-      alert('¡Gracias por tu donación!')
+
+    if (!validateForm()) {
+      return
+    }
+
+    try {
+      setLoading(true)
+      setMensaje('')
+
+      const monto = formData.monto === 'custom'
+        ? formData.montoCustom
+        : formData.monto
+
+      const donacion = {
+        tipoRecurso: formData.tipoRecurso,
+        cantidad: Number(monto),
+        estado: 'REGISTRADA',
+        usuarioDonanteId: null,
+        necesidadId: formData.necesidadId ? Number(formData.necesidadId) : null
+      }
+
+      await crearDonacion(donacion)
+
+      setMensaje('¡Donación registrada correctamente!')
+      setFormData({
+        nombre: '',
+        email: '',
+        monto: '50',
+        montoCustom: '',
+        metodoPago: 'tarjeta',
+        mensaje: '',
+        tipoRecurso: 'dinero',
+        necesidadId: ''
+      })
+    } catch (error) {
+      setMensaje(`Error: ${error.message}`)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -52,8 +102,13 @@ export default function Donacion() {
               <h2 className="fw-bold mb-2">Realizar Donación</h2>
               <p className="text-muted mb-4">Tu apoyo hace la diferencia. Elige el monto que deseas donar.</p>
 
+              {mensaje && (
+                <div className="alert alert-info" role="alert">
+                  {mensaje}
+                </div>
+              )}
+
               <form onSubmit={handleSubmit}>
-                {/* Nombre */}
                 <div className="mb-3">
                   <label htmlFor="nombre" className="form-label fw-semibold">Nombre completo</label>
                   <input
@@ -68,7 +123,6 @@ export default function Donacion() {
                   {errors.nombre && <div className="invalid-feedback">{errors.nombre}</div>}
                 </div>
 
-                {/* Email */}
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label fw-semibold">Correo electrónico</label>
                   <input
@@ -83,15 +137,32 @@ export default function Donacion() {
                   {errors.email && <div className="invalid-feedback">{errors.email}</div>}
                 </div>
 
-                {/* Monto */}
                 <div className="mb-3">
-                  <label htmlFor="monto" className="form-label fw-semibold">Monto de donación</label>
+                  <label htmlFor="tipoRecurso" className="form-label fw-semibold">Tipo de recurso</label>
+                  <select
+                    className="form-select"
+                    id="tipoRecurso"
+                    name="tipoRecurso"
+                    value={formData.tipoRecurso}
+                    onChange={handleChange}
+                  >
+                    <option value="dinero">Dinero</option>
+                    <option value="alimentos">Alimentos</option>
+                    <option value="agua">Agua</option>
+                    <option value="ropa">Ropa</option>
+                    <option value="medicamentos">Medicamentos</option>
+                  </select>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="monto" className="form-label fw-semibold">Cantidad / monto de donación</label>
                   <div className="mb-2 d-flex gap-2">
-                    <button type="button" className={`btn ${formData.monto === '25' ? 'btn-dark' : 'btn-outline-secondary'}`} onClick={() => setFormData(prev => ({ ...prev, monto: '25' }))}>$25</button>
-                    <button type="button" className={`btn ${formData.monto === '50' ? 'btn-dark' : 'btn-outline-secondary'}`} onClick={() => setFormData(prev => ({ ...prev, monto: '50' }))}>$50</button>
-                    <button type="button" className={`btn ${formData.monto === '100' ? 'btn-dark' : 'btn-outline-secondary'}`} onClick={() => setFormData(prev => ({ ...prev, monto: '100' }))}>$100</button>
+                    <button type="button" className={`btn ${formData.monto === '25' ? 'btn-dark' : 'btn-outline-secondary'}`} onClick={() => setFormData(prev => ({ ...prev, monto: '25' }))}>25</button>
+                    <button type="button" className={`btn ${formData.monto === '50' ? 'btn-dark' : 'btn-outline-secondary'}`} onClick={() => setFormData(prev => ({ ...prev, monto: '50' }))}>50</button>
+                    <button type="button" className={`btn ${formData.monto === '100' ? 'btn-dark' : 'btn-outline-secondary'}`} onClick={() => setFormData(prev => ({ ...prev, monto: '100' }))}>100</button>
                     <button type="button" className={`btn ${formData.monto === 'custom' ? 'btn-dark' : 'btn-outline-secondary'}`} onClick={() => setFormData(prev => ({ ...prev, monto: 'custom' }))}>Otro</button>
                   </div>
+
                   {formData.monto === 'custom' && (
                     <input
                       type="number"
@@ -99,14 +170,28 @@ export default function Donacion() {
                       name="montoCustom"
                       value={formData.montoCustom}
                       onChange={handleChange}
-                      placeholder="Ingresa un monto"
+                      placeholder="Ingresa una cantidad"
                       min="1"
                     />
                   )}
-                  {!formData.monto && errors.monto && <div className="text-danger mt-1">{errors.monto}</div>}
+
+                  {errors.monto && <div className="text-danger mt-1">{errors.monto}</div>}
                 </div>
 
-                {/* Método de Pago */}
+                <div className="mb-3">
+                  <label htmlFor="necesidadId" className="form-label fw-semibold">ID de necesidad asociada opcional</label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="necesidadId"
+                    name="necesidadId"
+                    value={formData.necesidadId}
+                    onChange={handleChange}
+                    placeholder="Ej: 1"
+                    min="1"
+                  />
+                </div>
+
                 <div className="mb-3">
                   <label htmlFor="metodoPago" className="form-label fw-semibold">Método de pago</label>
                   <select
@@ -122,9 +207,8 @@ export default function Donacion() {
                   </select>
                 </div>
 
-                {/* Mensaje (opcional) */}
                 <div className="mb-4">
-                  <label htmlFor="mensaje" className="form-label fw-semibold">Mensaje (opcional)</label>
+                  <label htmlFor="mensaje" className="form-label fw-semibold">Mensaje opcional</label>
                   <textarea
                     className="form-control"
                     id="mensaje"
@@ -133,13 +217,13 @@ export default function Donacion() {
                     onChange={handleChange}
                     placeholder="Comparte tu mensaje..."
                     rows="3"
-                  ></textarea>
+                  />
                 </div>
 
                 {/* Botón Submit */}
                 <button type="submit" className="btn btn-dark w-100 py-2" style={{ fontSize: '1.1rem' }}>
                   Donar ahora
-                </button>  
+                </button>
               </form>
             </div>
           </div>
