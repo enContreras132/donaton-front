@@ -140,10 +140,6 @@ export default function Donacion() {
                 <button type="submit" className="btn btn-dark w-100 py-2" style={{ fontSize: '1.1rem' }}>
                   Donar ahora
                 </button>
-
-                <p className="text-muted text-center small mt-3">
-                  Tu información es segura y no será compartida.
-                </p>
               </form>
             </div>
           </div>
