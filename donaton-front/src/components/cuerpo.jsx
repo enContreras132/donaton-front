@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export default function Cuerpo() {
   return (
     <section className="py-5 bg-light">
@@ -21,20 +23,35 @@ export default function Cuerpo() {
             </p>
           </div>
 
-          <div className="col-lg-6 d-flex justify-content-center align-items-center">
-            <a 
-              className="d-inline-block"
+          <div className="col-lg-6 d-flex flex-column justify-content-center align-items-center gap-3">
+            <Link 
+              className="d-inline-flex align-items-center justify-content-center text-decoration-none"
               style={{ 
                 fontSize: '1.2rem',
                 backgroundColor: '#000',
                 color: '#fff',
                 padding: '3rem 7rem',
                 borderRadius: '0.25rem',
-                textDecoration: 'none'
+                width: '300px',
+                height: '120px'
               }} 
-              href="/donar">
+              to="/donar">
               Donar
-            </a>
+            </Link>
+            <Link 
+              className="d-inline-flex align-items-center justify-content-center text-decoration-none hover-link"
+              style={{ 
+                fontSize: '1.2rem',
+                backgroundColor: '#000',
+                color: '#fff',
+                padding: '3rem 7rem',
+                borderRadius: '0.25rem',
+                width: '300px',
+                height: '120px'
+              }} 
+              to="/">
+              Reportar una necesidad
+            </Link>
           </div>
         </div>
       </div>

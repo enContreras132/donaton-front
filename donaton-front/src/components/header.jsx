@@ -1,4 +1,5 @@
 import { FaUserCircle } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 export default function Header() {
   return (
@@ -11,30 +12,30 @@ export default function Header() {
         padding: '1rem 2rem'
       }}
     >
-      <a className="navbar-brand fw-bold" href="/">
+      <Link className="navbar-brand fw-bold text-decoration-none text-dark" to="/">
         <img 
           src="src/assets/logo.png" 
           alt="Logo Donaton" 
           height="70"
           className="d-inline-block align-text-top"
         />
-      </a>
+      </Link>
 
       <div className="d-flex" style={{ gap: '10rem' }}>
-        <a className="nav-link" href="/nosotros">
+        <Link className="nav-link text-decoration-none text-dark" to="/nosotros">
           Nosotros
-        </a>
-        <a className="nav-link" href="/donar">
-          Donaciones
-        </a>
-        <a className="nav-link" href="/logear">
-          Registrarse
-        </a>
+        </Link>
+        <Link className="nav-link text-decoration-none text-dark" to="/donar">
+          Donar
+        </Link>
+        <Link className="nav-link text-decoration-none text-dark" to="/necesidad">
+          Necesidades
+        </Link>
       </div>
 
-      <a href="/perfil" className="text-decoration-none text-dark">
+      <Link to="/perfil" className="text-decoration-none text-dark">
         <FaUserCircle size={28} />
-      </a>
+      </Link>
     </nav>
   )
 }

@@ -1,4 +1,5 @@
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 export default function Footer() {
   return (
@@ -19,14 +20,14 @@ export default function Footer() {
             <h5 className="fw-bold mb-3">Enlaces útiles</h5>
             <ul className="list-unstyled">
               <li className="mb-2">
-                <a href="/nosotros" className="text-decoration-none text-muted hover-link">
+                <Link to="/nosotros" className="text-decoration-none text-muted hover-link">
                   Nosotros
-                </a>
+                </Link>
               </li>
               <li className="mb-2">
-                <a href="/donar" className="text-decoration-none text-muted hover-link">
+                <Link to="/donar" className="text-decoration-none text-muted hover-link">
                   Donar
-                </a>
+                </Link>
               </li>
               <li className="mb-2">
                 <a href="#" className="text-decoration-none text-muted hover-link">
