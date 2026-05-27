@@ -1,4 +1,4 @@
-const API_BFF = import.meta.env.VITE_BFF_URL || 'http://localhost:8090/api/bff'
+const API_BFF = import.meta.env.VITE_BFF_URL || 'http://localhost:8080/api/v1'
 
 const request = async (path, options = {}) => {
   const response = await fetch(`${API_BFF}${path}`, {
@@ -18,7 +18,12 @@ const request = async (path, options = {}) => {
     return null
   }
 
-  return response.json()
+  const text = await response.text()
+  if (!text) {
+    return null
+  }
+
+  return JSON.parse(text)
 }
 
 export const crearDonacion = (donacion) => {

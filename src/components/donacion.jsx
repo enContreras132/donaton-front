@@ -65,11 +65,22 @@ export default function Donacion() {
         ? formData.montoCustom
         : formData.monto
 
+      const mapTipoRecurso = {
+        dinero: 'DINERO',
+        alimentos: 'ALIMENTO',
+        agua: 'AGUA',
+        ropa: 'ROPA',
+        medicamentos: 'MEDICAMENTO'
+      }
+
       const donacion = {
-        tipoRecurso: formData.tipoRecurso,
+        tipoRecurso: mapTipoRecurso[formData.tipoRecurso],
+        detalleRecurso: formData.mensaje || `Donación de ${formData.tipoRecurso}`,
         cantidad: Number(monto),
-        estado: 'REGISTRADA',
-        usuarioDonanteId: null,
+        origen: formData.metodoPago,
+        nombreDonante: formData.nombre,
+        contactoDonante: formData.email,
+        centroAcopioId: null,
         necesidadId: formData.necesidadId ? Number(formData.necesidadId) : null
       }
 
@@ -87,7 +98,8 @@ export default function Donacion() {
         necesidadId: ''
       })
     } catch (error) {
-      setMensaje(`Error: ${error.message}`)
+      console.error(error)
+      setMensaje('No se pudo confirmar la respuesta, pero revisa si la donación fue registrada.')
     } finally {
       setLoading(false)
     }

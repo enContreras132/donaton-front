@@ -32,13 +32,12 @@ export default function Necesidad() {
       setMensaje('')
 
       const necesidad = {
-        zona: formData.zona,
-        tipoRecurso: formData.tipoRecurso,
-        cantidadSolicitada: Number(formData.cantidadSolicitada),
-        prioridad: formData.prioridad,
-        estado: 'PENDIENTE',
-        usuarioReportaId: null
-      }
+      recursoNecesitado: formData.tipoRecurso,
+      cantidad: Number(formData.cantidadSolicitada),
+      ubicacion: formData.zona,
+      descripcion: formData.descripcion,
+      prioridad: formData.prioridad === 'CRITICA' ? 'URGENTE' : formData.prioridad
+    }
 
       await crearNecesidad(necesidad)
 
@@ -51,7 +50,8 @@ export default function Necesidad() {
         descripcion: ''
       })
     } catch (error) {
-      setMensaje(`Error: ${error.message}`)
+      console.error(error)
+      setMensaje('No se pudo confirmar la respuesta, pero revisa si la necesidad fue registrada.')
     } finally {
       setLoading(false)
     }
