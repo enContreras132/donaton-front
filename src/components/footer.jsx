@@ -37,25 +37,27 @@ export default function Footer() {
 
             </ul>
           </div>
-
+          
           {/* Social Media */}
           <div className="col-lg-4 col-md-6 mb-4">
             <h5 className="fw-bold mb-3">Síguenos</h5>
             <div className="d-flex gap-3">
               <a href="#" className="text-muted text-decoration-none hover-link">
-                <FaFacebook size={24} />
+                <Facebook size={24}  />
               </a>
               <a href="#" className="text-muted text-decoration-none hover-link">
-                <FaTwitter size={24} />
+                <Twitter size={24} />
               </a>
               <a href="#" className="text-muted text-decoration-none hover-link">
-                <FaInstagram size={24} />
+                <Instagram size={24} />
               </a>
               <a href="#" className="text-muted text-decoration-none hover-link">
                 <FaLinkedin size={24} />
               </a>
             </div>
           </div>
+          
+            
         </div>
 
         {/* Divider */}
