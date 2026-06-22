@@ -5,6 +5,7 @@ import Donar from './pages/donar'
 import Nosotros from './pages/nosotros'
 import Necesidad from './pages/necesidad'
 import Admin from './pages/admin'
+import Login from './pages/login'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
@@ -22,8 +23,8 @@ function App() {
         <Route path="/donar" element={<Donar />} />
         <Route path="/nosotros" element={<Nosotros />} />
         <Route path="/necesidad" element={<Necesidad />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/admin/login" element={<Admin />} />
       </Routes>
     </Router>
   )

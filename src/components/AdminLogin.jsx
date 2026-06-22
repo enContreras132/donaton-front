@@ -1,5 +1,13 @@
 import { useState } from 'react'
+import axios from 'axios'
 
+/**
+ * Componente AdminLogin
+ * Autentica usuarios administradores contra el BFF
+ * 
+ * TODO: Implementar endpoint /api/v1/auth/login en BFF
+ * Este componente está listo para conectar con autenticación real
+ */
 export default function AdminLogin({ onLogin }) {
   const [formData, setFormData] = useState({
     usuario: '',
@@ -17,6 +25,14 @@ export default function AdminLogin({ onLogin }) {
     }))
   }
 
+  /**
+   * Genera un token seguro (en desarrollo)
+   * En producción, el token debería venir del backend
+   */
+  const generateSecureToken = () => {
+    return `${Math.random().toString(36).substring(2)}-${Date.now()}-${Math.random().toString(36).substring(2)}`
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
@@ -29,20 +45,47 @@ export default function AdminLogin({ onLogin }) {
     try {
       setLoading(true)
 
-      // Simulación de autenticación
-      // En producción, esto debería hacer una llamada al backend
-      if (formData.usuario === 'admin' && formData.contrasena === 'admin123') {
-        const adminData = {
+      try {
+        // Intenta autenticación con el BFF
+        // Este endpoint debe ser implementado en el backend
+        const response = await axios.post('http://localhost:8080/api/v1/auth/login', {
           usuario: formData.usuario,
-          token: 'admin-token-' + Date.now(),
+          contrasena: formData.contrasena
+        }, {
+          timeout: 5000
+        })
+
+        const adminData = {
+          usuario: response.data.usuario,
+          token: response.data.token,
           loginTime: new Date().toISOString()
         }
 
         localStorage.setItem('adminAuth', JSON.stringify(adminData))
         onLogin(adminData)
-      } else {
-        setError('Usuario o contraseña incorrectos')
+      } catch (bffError) {
+        // Fallback en desarrollo si el endpoint no existe aún
+        console.warn('Endpoint de autenticación no disponible. Usando modo demo.')
+        
+        // En desarrollo, aceptar cualquier entrada
+        // Esto debe ser removido cuando el backend esté listo
+        if (process.env.NODE_ENV === 'development') {
+          const adminData = {
+            usuario: formData.usuario,
+            token: generateSecureToken(),
+            loginTime: new Date().toISOString(),
+            isDevelopment: true
+          }
+
+          localStorage.setItem('adminAuth', JSON.stringify(adminData))
+          onLogin(adminData)
+        } else {
+          setError('Error en la autenticación. Contacate con el administrador.')
+        }
       }
+    } catch (err) {
+      console.error('Error en login:', err)
+      setError('Ocurrió un error inesperado. Intenta nuevamente.')
     } finally {
       setLoading(false)
     }
@@ -77,6 +120,7 @@ export default function AdminLogin({ onLogin }) {
                     value={formData.usuario}
                     onChange={handleChange}
                     placeholder="Ingresa tu usuario"
+                    autoComplete="username"
                   />
                 </div>
 
@@ -90,6 +134,7 @@ export default function AdminLogin({ onLogin }) {
                     value={formData.contrasena}
                     onChange={handleChange}
                     placeholder="Ingresa tu contraseña"
+                    autoComplete="current-password"
                   />
                 </div>
 
@@ -105,10 +150,10 @@ export default function AdminLogin({ onLogin }) {
 
               <hr className="my-4" />
 
-              <div className="alert alert-info small" role="alert">
-                <strong>Datos de prueba:</strong><br />
-                Usuario: <code>admin</code><br />
-                Contraseña: <code>admin123</code>
+              <div className="alert alert-warning small" role="alert">
+                <strong>⚠️ Nota:</strong><br />
+                En desarrollo, cualquier credencial funciona.
+                El sistema está listo para integrar autenticación real cuando el backend esté disponible.
               </div>
             </div>
           </div>

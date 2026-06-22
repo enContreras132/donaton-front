@@ -6,5 +6,5 @@ dist
 .env.example
 .vscode
 .idea
-*.md
+*md
 .DS_Store

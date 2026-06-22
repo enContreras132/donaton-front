@@ -33,7 +33,7 @@ export default function Header() {
         </Link>
       </div>
 
-      <Link to="/perfil" className="text-decoration-none text-dark">
+      <Link to="/login" className="text-decoration-none text-dark">
         <FaUserCircle size={28} />
       </Link>
     </nav>
