@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import Header from '../components/header'
 import Footer from '../components/footer'
-import { crearNecesidad } from '../services/bffService'
+import { crearNecesidad } from '../services/apiService'
 
 export default function Necesidad() {
   const [formData, setFormData] = useState({
