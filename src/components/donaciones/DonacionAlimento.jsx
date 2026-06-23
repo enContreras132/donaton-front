@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { crearDonacion } from '../../services/donacionesService'
+import { useFormValidation } from '../../hooks/useFormValidation'
 
 export default function DonacionAlimento() {
   const [formData, setFormData] = useState({
@@ -15,9 +16,9 @@ export default function DonacionAlimento() {
     necesidadId: ''
   })
 
-  const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
   const [mensaje, setMensaje] = useState('')
+  const { errors, validate } = useFormValidation()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -28,32 +29,21 @@ export default function DonacionAlimento() {
   }
 
   const validateForm = () => {
-    const newErrors = {}
-
-    if (!formData.nombre.trim()) {
-      newErrors.nombre = 'El nombre es requerido'
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'El email es requerido'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Email inválido'
-    }
-
     const cantidad = formData.cantidad === 'custom'
       ? formData.cantidadCustom
       : formData.cantidad
 
-    if (!cantidad || Number(cantidad) <= 0) {
-      newErrors.cantidad = 'Ingresa una cantidad válida'
-    }
-
-    if (!formData.tipoAlimento.trim()) {
-      newErrors.tipoAlimento = 'Selecciona un tipo de alimento'
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
+    return validate({
+      nombre: formData.nombre,
+      email: formData.email,
+      cantidad: cantidad,
+      tipoAlimento: formData.tipoAlimento
+    }, {
+      nombre: 'nombre',
+      email: 'email',
+      cantidad: 'cantidad',
+      tipoAlimento: 'requerido'
+    })
   }
 
   const handleSubmit = async (e) => {

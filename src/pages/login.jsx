@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import Header from '../components/header'
 import Footer from '../components/footer'
@@ -154,6 +154,9 @@ export default function Login() {
                     {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
                   </button>
                 </form>
+                <p className="text-center text-muted mt-3 small">
+                  ¿Olvidaste tu contraseña? <Link to="/#">Recupérala aquí</Link>
+                </p>
               </div>
             </div>
           </div>
