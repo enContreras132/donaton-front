@@ -42,6 +42,7 @@ export default function Admin() {
     setAdminUser(null)
     setDonaciones([])
     setDonacionEditando(null)
+    navigate('/')
   }
 
   const cargarDonaciones = async () => {

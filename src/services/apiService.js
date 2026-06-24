@@ -1,4 +1,4 @@
-const API_GATEWAY_URL = import.meta.env.VITE_API_GATEWAY_URL || 'http://localhost:8080'
+const API_GATEWAY_URL = (import.meta.env.VITE_API_GATEWAY_URL || 'http://localhost:8080') + (import.meta.env.VITE_API_V1_BASE || '/api/v1')
 
 const handleResponse = async (response) => {
   if (!response.ok) {
@@ -9,7 +9,7 @@ const handleResponse = async (response) => {
 }
 
 export const crearDonacion = async (donacion) => {
-  const response = await fetch(`${API_GATEWAY_URL}/api/donaciones`, {
+  const response = await fetch(`${API_GATEWAY_URL}/donaciones`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -20,7 +20,7 @@ export const crearDonacion = async (donacion) => {
 }
 
 export const listarDonaciones = async () => {
-  const response = await fetch(`${API_GATEWAY_URL}/api/donaciones`, {
+  const response = await fetch(`${API_GATEWAY_URL}/donaciones`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ export const listarDonaciones = async () => {
 }
 
 export const crearNecesidad = async (necesidad) => {
-  const response = await fetch(`${API_GATEWAY_URL}/api/necesidades`, {
+  const response = await fetch(`${API_GATEWAY_URL}/necesidades`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ export const crearNecesidad = async (necesidad) => {
 }
 
 export const listarNecesidades = async () => {
-  const response = await fetch(`${API_GATEWAY_URL}/api/necesidades`, {
+  const response = await fetch(`${API_GATEWAY_URL}/necesidades`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export const listarNecesidades = async () => {
 }
 
 export const obtenerNecesidad = async (id) => {
-  const response = await fetch(`${API_GATEWAY_URL}/api/necesidades/${id}`, {
+  const response = await fetch(`${API_GATEWAY_URL}/necesidades/${id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ export const obtenerNecesidad = async (id) => {
 }
 
 export const obtenerDonacion = async (id) => {
-  const response = await fetch(`${API_GATEWAY_URL}/api/donaciones/${id}`, {
+  const response = await fetch(`${API_GATEWAY_URL}/donaciones/${id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ export const obtenerDonacion = async (id) => {
 }
 
 export const actualizarDonacion = async (id, donacion) => {
-  const response = await fetch(`${API_GATEWAY_URL}/api/donaciones/${id}`, {
+  const response = await fetch(`${API_GATEWAY_URL}/donaciones/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ export const actualizarDonacion = async (id, donacion) => {
 }
 
 export const eliminarDonacion = async (id) => {
-  const response = await fetch(`${API_GATEWAY_URL}/api/donaciones/${id}`, {
+  const response = await fetch(`${API_GATEWAY_URL}/donaciones/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
