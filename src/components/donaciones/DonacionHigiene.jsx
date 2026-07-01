@@ -70,18 +70,13 @@ export default function DonacionHigiene() {
         : formData.cantidad
 
       const donacion = {
-        tipoRecurso: 'higiene',
+        tipoRecurso: 'HIGIENE',
+        detalleRecurso: `Producto: ${formData.tipoProducto}, Estado: ${formData.estado}`,
         cantidad: Number(cantidad),
-        unidad: 'unidades',
-        detalles: {
-          tipoProducto: formData.tipoProducto,
-          estado: formData.estado,
-          donador: formData.nombre,
-          email: formData.email,
-          mensaje: formData.mensaje
-        },
+        origen: formData.nombre,
+        nombreDonante: formData.nombre,
+        contactoDonante: formData.email,
         estado: 'REGISTRADA',
-        usuarioDonanteId: null,
         necesidadId: formData.necesidadId ? Number(formData.necesidadId) : null
       }
 

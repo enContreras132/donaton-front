@@ -72,20 +72,13 @@ export default function DonacionRopa() {
         : formData.cantidad
 
       const donacion = {
-        tipoRecurso: 'ropa',
+        tipoRecurso: 'ROPA',
+        detalleRecurso: `Tipo: ${formData.tipoRopa}, Género: ${formData.genero}, Talla: ${formData.talla}, Estado: ${formData.estado}`,
         cantidad: Number(cantidad),
-        unidad: 'prendas',
-        detalles: {
-          tipoRopa: formData.tipoRopa,
-          genero: formData.genero,
-          talla: formData.talla,
-          estado: formData.estado,
-          donador: formData.nombre,
-          email: formData.email,
-          mensaje: formData.mensaje
-        },
+        origen: formData.nombre,
+        nombreDonante: formData.nombre,
+        contactoDonante: formData.email,
         estado: 'REGISTRADA',
-        usuarioDonanteId: null,
         necesidadId: formData.necesidadId ? Number(formData.necesidadId) : null
       }
 

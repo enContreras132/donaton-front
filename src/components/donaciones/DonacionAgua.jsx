@@ -67,18 +67,13 @@ export default function DonacionAgua() {
         : formData.cantidad
 
       const donacion = {
-        tipoRecurso: 'agua',
+        tipoRecurso: 'AGUA',
+        detalleRecurso: `Tipo: ${formData.tipoAgua}, Presentación: ${formData.presentacion}, Unidad: ${formData.unidad}`,
         cantidad: Number(cantidad),
-        unidad: formData.unidad,
-        detalles: {
-          tipoAgua: formData.tipoAgua,
-          presentacion: formData.presentacion,
-          donador: formData.nombre,
-          email: formData.email,
-          mensaje: formData.mensaje
-        },
+        origen: formData.nombre,
+        nombreDonante: formData.nombre,
+        contactoDonante: formData.email,
         estado: 'REGISTRADA',
-        usuarioDonanteId: null,
         necesidadId: formData.necesidadId ? Number(formData.necesidadId) : null
       }
 

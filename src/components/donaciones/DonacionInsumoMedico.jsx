@@ -76,20 +76,13 @@ export default function DonacionInsumoMedico() {
         : formData.cantidad
 
       const donacion = {
-        tipoRecurso: 'insumo_medico',
+        tipoRecurso: 'INSUMO_MEDICO',
+        detalleRecurso: `Tipo: ${formData.tipoInsumo}, Especificación: ${formData.especificacion}, Estado: ${formData.estado}${formData.fecha_vencimiento ? `, Vence: ${formData.fecha_vencimiento}` : ''}`,
         cantidad: Number(cantidad),
-        unidad: 'unidades',
-        detalles: {
-          tipoInsumo: formData.tipoInsumo,
-          especificacion: formData.especificacion,
-          estado: formData.estado,
-          fecha_vencimiento: formData.fecha_vencimiento,
-          donador: formData.nombre,
-          email: formData.email,
-          mensaje: formData.mensaje
-        },
+        origen: formData.nombre,
+        nombreDonante: formData.nombre,
+        contactoDonante: formData.email,
         estado: 'REGISTRADA',
-        usuarioDonanteId: null,
         necesidadId: formData.necesidadId ? Number(formData.necesidadId) : null
       }
 

@@ -71,18 +71,13 @@ export default function DonacionOtro() {
         : formData.cantidad
 
       const donacion = {
-        tipoRecurso: 'otro',
+        tipoRecurso: 'OTRO',
+        detalleRecurso: `Descripción: ${formData.descripcion}, Estado: ${formData.estado}, Unidad: ${formData.unidad}`,
         cantidad: Number(cantidad),
-        unidad: formData.unidad,
-        detalles: {
-          descripcion: formData.descripcion,
-          estado: formData.estado,
-          donador: formData.nombre,
-          email: formData.email,
-          mensaje: formData.mensaje
-        },
+        origen: formData.nombre,
+        nombreDonante: formData.nombre,
+        contactoDonante: formData.email,
         estado: 'REGISTRADA',
-        usuarioDonanteId: null,
         necesidadId: formData.necesidadId ? Number(formData.necesidadId) : null
       }
 
